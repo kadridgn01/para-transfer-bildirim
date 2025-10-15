@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bildirim Merkezi</title>
+    <style>
+        /* Genel Stiller ve Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        
+        body {
+            background-color: #1c1c1e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Telefon Ekranı Çerçevesi */
+        .phone-screen {
+            width: 414px; /* iPhone 11 Pro Max genişliği */
+            height: 896px; /* iPhone 11 Pro Max yüksekliği */
+            background-color: #000;
+            border-radius: 40px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* iOS Duvar Kağıdı Efekti */
+        .wallpaper {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            z-index: 1;
+        }
+        
+        /* Kilit Ekranı Arayüzü */
+        .lock-screen-ui {
+            position: relative;
+            z-index: 2;
+            padding: 60px 30px 30px;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1; /* Ekranı kaplaması için */
+        }
+        
+        #date-info {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        #clock {
+            font-size: 6rem; /* Devasa saat */
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin: -10px 0;
+        }
+        
+        .notification-center-title {
+            margin-top: 40px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Bildirim Kartı */
+        .notification-card {
+            background: rgba(255, 255, 255, 0.2); /* Yarı saydam arka plan */
+            backdrop-filter: blur(25px); /* iOS bulanıklık efekti */
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 15px;
+            width: 100%;
+            max-width: 380px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            
+            /* Animasyon için başlangıç durumu */
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        /* JavaScript ile eklenecek olan görünürlük sınıfı */
+        .notification-card.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .app-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            margin-right: 8px;
+        }
+        
+        .app-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .notification-time {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+        }
+        
+        .notification-body {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Kilit Ekranı Butonları */
+        .lock-screen-actions {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            padding: 0 50px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 3;
+        }
+        .action-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            display: grid;
+            place-items: center;
+        }
+        .action-button svg {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-screen">
+        <div class="wallpaper"></div>
+        
+        <div class="lock-screen-ui">
+            <div id="date-info"></div>
+            <div id="clock"></div>
+            <div class="notification-center-title">Bildirim Merkezi</div>
+
+            <div class="notification-card" id="main-notification">
+                <div class="notification-header">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Garanti_BBVA_logo.svg/2560px-Garanti_BBVA_logo.svg.png" class="app-icon" alt="Banka Logosu">
+                    <span class="app-name">Garanti BBVA</span>
+                    <span class="notification-time">Şimdi</span>
+                </div>
+                <div class="notification-body">
+                    Hesabınıza para geldi.
+                </div>
+            </div>
+        </div>
+
+        <div class="lock-screen-actions">
+            <div class="action-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 0 1 1 1v2.586l1.707-1.707a1 1 0 1 1 1.414 1.414L14.414 7H17a1 1 0 1 1 0 2h-2.586l1.707 1.707a1 1 0 1 1-1.414 1.414L13 10.414V13a1 1 0 1 1-2 0v-2.586l-1.707 1.707a1 1 0 1 1-1.414-1.414L9.586 9H7a1 1 0 1 1 0-2h2.586l-1.707-1.707a1 1 0 0 1 1.414-1.414L11 4.586V3a1 1 0 0 1 1-1zM6 16a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H7a1 1 0 0 1-1-1zm1 4a1 1 0 0 1 1-1h8a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1z"/></svg>
+            </div>
+            <div class="action-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12zm4.75-6.064a8 8 0 0 0-2.686 5.857l1.418-.21a6.502 6.502 0 0 1 2.228-4.814l-1-.833zM12 4a8.002 8.002 0 0 0-5.936 2.75l.833 1a6.5 6.5 0 0 1 9.94 5.343l.21 1.418A8 8 0 0 0 12 4z"/></svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const clockEl = document.getElementById('clock');
+            const dateEl = document.getElementById('date-info');
+            const notificationCard = document.getElementById('main-notification');
+            
+            // Saati ve tarihi güncelleyen fonksiyon
+            function updateTime() {
+                const now = new Date();
+                
+                // Saati formatla (Örn: 19:07)
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                clockEl.textContent = `${hours}:${minutes}`;
+                
+                // Tarihi formatla (Örn: 15 Ekim Çarşamba)
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateEl.textContent = now.toLocaleDateString('tr-TR', options);
+            }
+            
+            // Sayfa açıldığında ve her saniye saati güncelle
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // 4 saniye sonra bildirimi göster
+            setTimeout(() => {
+                notificationCard.classList.add('visible');
+            }, 4000); // 4000 milisaniye = 4 saniye
+        });
+    </script>
+</body>
+</html>
