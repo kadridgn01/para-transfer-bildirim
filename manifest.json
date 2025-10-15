@@ -1,0 +1,21 @@
+{
+  "name": "Kıyı Bank Bildirim",
+  "short_name": "Kıybank",
+  "start_url": "bildirim-v2.html",
+  "display": "standalone",
+  "background_color": "#1c1c1e",
+  "theme_color": "#005f73",
+  "description": "Kıyı Bank bildirim simülasyonu.",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
