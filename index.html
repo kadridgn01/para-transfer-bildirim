@@ -131,22 +131,33 @@
             window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
         }
     </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+        }
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const clockEl = document.getElementById('clock');
             const dateEl = document.getElementById('date-info');
             const notificationCard = document.getElementById('main-notification');
             
-            function updateTime() {
+            // 1. Tarihi sayfa yüklendiğinde BİR KEZ sabit olarak ayarla
+            dateEl.textContent = "21 Ekim 2025 Salı";
+
+            // 2. Sadece saati güncelleyen bir fonksiyon oluştur
+            function updateClock() {
                 const now = new Date();
                 const hours = String(now.getHours()).padStart(2, '0');
                 const minutes = String(now.getMinutes()).padStart(2, '0');
                 clockEl.textContent = `${hours}:${minutes}`;
-                dateEl.textContent = now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
             }
-            updateTime();
-            setInterval(updateTime, 1000);
+            
+            // 3. Saati hemen çalıştır ve her saniye güncellemeye devam et
+            updateClock();
+            setInterval(updateClock, 1000);
 
+            // 4. saniye sonra bildirimi göster
             setTimeout(() => {
                 notificationCard.classList.add('visible');
             }, 4000);
