@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Bildirim Merkezi - Kıyı Bank</title>
     
     <meta name="theme-color" content="#005f73">
@@ -14,29 +14,19 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
         
         body {
-            background-color: #1c1c1e;
+            background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh; /* Ekranın tamamını kapla */
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Telefon ekranının dışına taşan contenti gizle */
-        }
-
-        .phone-screen {
-            width: 414px;
-            height: 896px;
-            background-color: #000;
-            border-radius: 40px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
-            position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            position: relative; /* İçerideki absolute elementler için */
         }
 
-        /* DÜZELTME: Arka plan parlaklığını düşür ve kontrastı ayarla */
+        /* YENİ: Telefon çerçevesi kaldırıldı, içerik doğrudan body'e yerleşti */
+
         .wallpaper {
             position: absolute;
             top: 0; left: 0;
@@ -45,7 +35,7 @@
             background-image: url('assets/arkaplan.jpg');
             background-size: cover;
             background-position: center;
-            filter: blur(15px) brightness(0.7) contrast(1.1); /* Parlaklık düşürüldü, kontrast arttırıldı */
+            filter: blur(15px) brightness(0.7) contrast(1.1);
             transform: scale(1.1);
             z-index: 1;
         }
@@ -53,13 +43,14 @@
         .lock-screen-ui {
             position: relative;
             z-index: 2;
-            padding: 60px 30px 30px;
+            padding: 15vh 30px 30px; /* Üst boşluğu esnek yaptık */
             color: white;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex-grow: 1;
+            width: 100%;
+            height: 100%;
             text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         
@@ -73,15 +64,15 @@
             -webkit-backdrop-filter: blur(25px);
             border-radius: 20px;
             padding: 15px;
-            width: 100%;
-            max-width: 380px;
+            width: 90%; /* Genişliği esnek yaptık */
+            max-width: 400px;
             text-align: left;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             opacity: 0;
             transform: translateY(-20px) scale(0.95);
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-            color: #fff; /* Bildirim içindeki yazı rengi */
+            color: #fff;
         }
 
         .notification-card.visible { opacity: 1; transform: translateY(0) scale(1); }
@@ -91,17 +82,18 @@
         .notification-time { margin-left: auto; font-size: 0.8rem; color: #e0e0e0; }
         .notification-body { font-size: 1rem; font-weight: 500; }
 
-        /* YENİ: "Yukarı Kaydır" Metni */
         .swipe-to-unlock {
             position: absolute;
-            bottom: 50px; /* Alttan biraz yukarıda */
+            bottom: 30px;
+            /* YENİ: iPhone çentiği için güvenlik payı */
+            padding-bottom: env(safe-area-inset-bottom, 10px); 
             width: 100%;
             text-align: center;
             color: rgba(255, 255, 255, 0.7);
             font-size: 1rem;
             font-weight: 500;
             z-index: 3;
-            animation: pulse 2s infinite ease-in-out; /* Hafif bir parlayıp sönme animasyonu */
+            animation: pulse 2s infinite ease-in-out;
         }
 
         @keyframes pulse {
@@ -109,36 +101,30 @@
             50% { opacity: 1; }
             100% { opacity: 0.7; }
         }
-
-        /* Eski ikonları gizle veya kaldır */
-        .lock-screen-actions { display: none; }
     </style>
 </head>
 <body>
-    <div class="phone-screen">
-        <div class="wallpaper"></div>
-        <div class="lock-screen-ui">
-            <div id="date-info"></div>
-            <div id="clock"></div>
-            <div class="notification-center-title">Bildirim Merkezi</div>
+    <div class="wallpaper"></div>
+    <div class="lock-screen-ui">
+        <div id="date-info"></div>
+        <div id="clock"></div>
+        <div class="notification-center-title">Bildirim Merkezi</div>
 
-            <div class="notification-card" id="main-notification">
-                <div class="notification-header">
-                    <img src="assets/kiyi-bank-logo.png" class="app-icon" alt="Kıyı Bank Logosu">
-                    <span class="app-name">Kıyıbank</span>
-                    <span class="notification-time">Şimdi</span>
-                </div>
-                <div class="notification-body">
-                    Hesabınıza para geldi.
-                </div>
+        <div class="notification-card" id="main-notification">
+            <div class="notification-header">
+                <img src="assets/kiyi-bank-logo.png" class="app-icon" alt="Kıyı Bank Logosu">
+                <span class="app-name">Kıyı Bank</span>
+                <span class="notification-time">Şimdi</span>
+            </div>
+            <div class="notification-body">
+                Hesabınıza para geldi.
             </div>
         </div>
+    </div>
 
-        <div class="swipe-to-unlock">
-            Yukarı kaydırarak aç
-        </div>
-
-        </div>
+    <div class="swipe-to-unlock">
+        Yukarı kaydırarak aç
+    </div>
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -156,7 +142,7 @@
                 const hours = String(now.getHours()).padStart(2, '0');
                 const minutes = String(now.getMinutes()).padStart(2, '0');
                 clockEl.textContent = `${hours}:${minutes}`;
-                dateEl.textContent = now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+                dateEl.textContent = now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
             }
             updateTime();
             setInterval(updateTime, 1000);
