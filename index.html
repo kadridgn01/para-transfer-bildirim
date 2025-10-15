@@ -21,6 +21,7 @@
             min-height: 100vh;
             margin: 0;
             font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Telefon ekranının dışına taşan contenti gizle */
         }
 
         .phone-screen {
@@ -35,17 +36,17 @@
             flex-direction: column;
         }
 
-        /* YENİ: Bulanık Arka Plan Görseli */
+        /* DÜZELTME: Arka plan parlaklığını düşür ve kontrastı ayarla */
         .wallpaper {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-color: #333; /* Resim yüklenmezse görünecek renk */
+            background-color: #333;
             background-image: url('assets/arkaplan.jpg');
             background-size: cover;
             background-position: center;
-            filter: blur(15px); /* Bulanıklık efekti */
-            transform: scale(1.1); /* Kenarlardaki bulanıklık kaybını önlemek için */
+            filter: blur(15px) brightness(0.7) contrast(1.1); /* Parlaklık düşürüldü, kontrast arttırıldı */
+            transform: scale(1.1);
             z-index: 1;
         }
         
@@ -59,7 +60,7 @@
             flex-direction: column;
             align-items: center;
             flex-grow: 1;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3); /* Yazıların okunabilirliği için */
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         
         #date-info { font-size: 1.2rem; font-weight: 500; }
@@ -67,7 +68,7 @@
         .notification-center-title { margin-top: 40px; font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; }
 
         .notification-card {
-            background: rgba(0, 0, 0, 0.25); /* Daha koyu ve okunur bir arka plan */
+            background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border-radius: 20px;
@@ -80,6 +81,7 @@
             opacity: 0;
             transform: translateY(-20px) scale(0.95);
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            color: #fff; /* Bildirim içindeki yazı rengi */
         }
 
         .notification-card.visible { opacity: 1; transform: translateY(0) scale(1); }
@@ -89,15 +91,27 @@
         .notification-time { margin-left: auto; font-size: 0.8rem; color: #e0e0e0; }
         .notification-body { font-size: 1rem; font-weight: 500; }
 
-        .lock-screen-actions {
-            position: absolute; bottom: 30px; width: 100%;
-            padding: 0 50px; display: flex; justify-content: space-between; z-index: 3;
+        /* YENİ: "Yukarı Kaydır" Metni */
+        .swipe-to-unlock {
+            position: absolute;
+            bottom: 50px; /* Alttan biraz yukarıda */
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            font-weight: 500;
+            z-index: 3;
+            animation: pulse 2s infinite ease-in-out; /* Hafif bir parlayıp sönme animasyonu */
         }
-        .action-button {
-            width: 60px; height: 60px; border-radius: 50%;
-            background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); display: grid; place-items: center;
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
         }
-        .action-button svg { width: 28px; height: 28px; color: white; }
+
+        /* Eski ikonları gizle veya kaldır */
+        .lock-screen-actions { display: none; }
     </style>
 </head>
 <body>
@@ -110,7 +124,7 @@
 
             <div class="notification-card" id="main-notification">
                 <div class="notification-header">
-                    <img src="assets/kiyi-bank-logo.png" class="app-icon" alt="Banka Logosu">
+                    <img src="assets/kiyi-bank-logo.png" class="app-icon" alt="Kıyı Bank Logosu">
                     <span class="app-name">Kıyı Bank</span>
                     <span class="notification-time">Şimdi</span>
                 </div>
@@ -120,15 +134,11 @@
             </div>
         </div>
 
-        <div class="lock-screen-actions">
-            <div class="action-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 0 1 1 1v2.586l1.707-1.707a1 1 0 1 1 1.414 1.414L14.414 7H17a1 1 0 1 1 0 2h-2.586l1.707 1.707a1 1 0 1 1-1.414 1.414L13 10.414V13a1 1 0 1 1-2 0v-2.586l-1.707 1.707a1 1 0 1 1-1.414-1.414L9.586 9H7a1 1 0 1 1 0-2h2.586l-1.707-1.707a1 1 0 0 1 1.414-1.414L11 4.586V3a1 1 0 0 1 1-1zM6 16a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H7a1 1 0 0 1-1-1zm1 4a1 1 0 0 1 1-1h8a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1z"/></svg>
-            </div>
-            <div class="action-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12zm4.75-6.064a8 8 0 0 0-2.686 5.857l1.418-.21a6.502 6.502 0 0 1 2.228-4.814l-1-.833zM12 4a8.002 8.002 0 0 0-5.936 2.75l.833 1a6.5 6.5 0 0 1 9.94 5.343l.21 1.418A8 8 0 0 0 12 4z"/></svg>
-            </div>
+        <div class="swipe-to-unlock">
+            Yukarı kaydırarak aç
         </div>
-    </div>
+
+        </div>
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -136,7 +146,6 @@
         }
     </script>
     <script>
-        // Saat ve bildirim scripti aynı, değişiklik yok.
         document.addEventListener('DOMContentLoaded', () => {
             const clockEl = document.getElementById('clock');
             const dateEl = document.getElementById('date-info');
