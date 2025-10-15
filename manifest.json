@@ -1,7 +1,7 @@
 {
   "name": "Kıyı Bank Bildirim",
   "short_name": "Kıybank",
-  "start_url": "bildirim-v2.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#1c1c1e",
   "theme_color": "#005f73",
