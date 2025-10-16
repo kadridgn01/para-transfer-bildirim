@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Bildirim Merkezi - Kıyı Bank</title>
+    <title>Bildirim Merkezi - Boğazbank</title>
     
     <meta name="theme-color" content="#005f73">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -112,8 +112,8 @@
 
         <div class="notification-card" id="main-notification">
             <div class="notification-header">
-                <img src="assets/kiyi-bank-logo.png" class="app-icon" alt="Kıyı Bank Logosu">
-                <span class="app-name">Kıyıbank</span>
+                <img src="assets/kiyi-bank-logo.png" class="app-icon" alt="Boğazbank Logosu">
+                <span class="app-name">Boğazbank</span>
                 <span class="notification-time">Şimdi</span>
             </div>
             <div class="notification-body">
@@ -137,27 +137,28 @@
         }
     </script>
     <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+        }
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const clockEl = document.getElementById('clock');
-            const dateEl = document.getElementById('date-info');
             const notificationCard = document.getElementById('main-notification');
             
-            // 1. Tarihi sayfa yüklendiğinde BİR KEZ sabit olarak ayarla
-            dateEl.textContent = "21 Ekim Salı";
-
-            // 2. Sadece saati güncelleyen bir fonksiyon oluştur
-            function updateClock() {
-                const now = new Date();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                clockEl.textContent = `${hours}:${minutes}`;
+            // Tarih ve saati sabit olarak ayarlayan fonksiyon
+            function setStaticDateTime() {
+                const clockEl = document.getElementById('clock');
+                const dateEl = document.getElementById('date-info');
+                
+                // Saati sabit bir değere ayarla
+                clockEl.textContent = "16:10"; 
+                
+                // Tarihi istediğiniz sabit değere ayarla
+                dateEl.textContent = "21 Ekim Salı";
             }
-            
-            // 3. Saati hemen çalıştır ve her saniye güncellemeye devam et
-            updateClock();
-            setInterval(updateClock, 1000);
+            setStaticDateTime(); // Sayfa yüklendiğinde fonksiyonu çalıştır
 
-            // 4. saniye sonra bildirimi göster
+            // 4 saniye sonra bildirimi göster
             setTimeout(() => {
                 notificationCard.classList.add('visible');
             }, 4000);
