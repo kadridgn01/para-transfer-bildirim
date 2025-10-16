@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kiyi-bank-bildirim-v1';
+const CACHE_NAME = 'boğaz-bank-bildirim-v1';
 // Önbelleğe alınacak tüm dosyaların listesi
 const urlsToCache = [
   './',
