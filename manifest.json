@@ -1,11 +1,11 @@
 {
-  "name": "Kıyı Bank Bildirim",
-  "short_name": "Kıybank",
+  "name": "Boğazbank Bildirim",
+  "short_name": "Boğazbank",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#1c1c1e",
   "theme_color": "#005f73",
-  "description": "Kıyı Bank bildirim simülasyonu.",
+  "description": "Boğazbank bildirim simülasyonu.",
   "icons": [
     {
       "src": "assets/icon-192.png",
